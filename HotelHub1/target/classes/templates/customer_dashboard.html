@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer Dashboard</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <a th:href="@{/customer/home}">Home</a> |
+    <a th:href="@{/customer/dashboard}">My Bookings</a> |
+    <a th:href="@{/customer/booking}">Booking</a> |
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-link" style="background:none; border:none; padding:0; cursor:pointer; color:blue; text-decoration:underline;">
+            Logout
+        </button>
+    </form>
+</nav>
+
+<h2>Welcome [[${#authentication.name}]]!</h2>
+
+<!-- Bookings Table -->
+<div th:if="${bookings != null and #lists.size(bookings) > 0}">
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>Room #</th>
+            <th>Check-In</th>
+            <th>Check-Out</th>
+            <th>Package</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking : ${bookings}">
+            <td th:text="${booking.bookingId}"></td>
+            <td th:text="${booking.room.roomNumber}"></td>
+            <td th:text="${booking.checkInDate}"></td>
+            <td th:text="${booking.checkOutDate}"></td>
+            <td th:text="${booking.aPackage.packageName}"></td>
+            <td th:text="${booking.status}"></td>
+            <td>
+                <a th:href="@{'/customer/booking/' + ${booking.bookingId} + '/details'}">View</a>
+            </td>
+            <td>
+                <form th:action="@{'/customer/booking/' + ${booking.bookingId} + '/cancel'}" method="post">
+                    <button type="submit">Cancel</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- No bookings message -->
+<div th:if="${bookings == null or #lists.isEmpty(bookings)}">
+    <p>No bookings found.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Booking</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<nav>
+    <a th:href="@{/customer/dashboard}">← Back to Dashboard</a>
+</nav>
+
+<h2>Select Booking Options</h2>
+<form th:action="@{/customer/booking/confirm}" method="post">
+
+    <label>Package:</label>
+    <select name="packageId" required>
+        <option th:each="pkg : ${packages}" th:value="${pkg.packageId}" th:text="${pkg.packageName}"></option>
+    </select><br/>
+
+    <label>Room Type:</label>
+    <select name="roomTypeId" required>
+        <option th:each="rt : ${roomTypes}" th:value="${rt.roomTypeId}" th:text="${rt.typeName}"></option>
+    </select><br/>
+
+    <label>Check-In:</label>
+    <input type="date" name="checkIn" required/><br/>
+
+    <label>Check-Out:</label>
+    <input type="date" name="checkOut" required/><br/>
+
+    <label>Payment Method:</label>
+    <select name="paymentMethod" required>
+        <option value="CASH">Cash</option>
+        <option value="QR">QR</option>
+        <option value="CARD">Debit/Credit</option>
+    </select><br/><br/>
+
+    <button type="submit">Continue & Pay</button>
+</form>
+
+</body>
+</html>
