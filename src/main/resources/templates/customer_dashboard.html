@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>My Bookings – Hotel Hub 1</title>
+    <link rel="stylesheet" href="/css/site.css"/>
+</head>
+<body>
+
+<nav>
+    <a th:href="@{/customer/dashboard}">My Bookings</a>
+    <a th:href="@{/customer/booking}">New Booking</a>
+    <form th:action="@{/logout}" method="post" style="float:right;">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <button type="submit">Logout</button>
+    </form>
+</nav>
+
+<main>
+    <!-- Customer Profile -->
+    <section>
+        <h2>Welcome, <span th:text="${customer.customerName}">Customer Name</span>!</h2>
+        <p><strong>Email:</strong> <span th:text="${customer.email}"/></p>
+        <p><strong>Phone:</strong> <span th:text="${customer.phoneNumber}"/></p>
+        <p><strong>Address:</strong> <span th:text="${customer.address}"/></p>
+    </section>
+
+    <hr/>
+
+    <!-- Bookings Table -->
+    <section th:if="${bookings.size()>0}">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Package</th>
+                <th>Room #</th>
+                <th>Check‑In</th>
+                <th>Check‑Out</th>
+                <th>Status</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="b : ${bookings}">
+                <td th:text="${b.bookingId}"></td>
+                <td th:text="${b.aPackage.packageName}"></td>
+                <td th:text="${b.room.roomNumber}"></td>
+                <td th:text="${b.checkInDate}"></td>
+                <td th:text="${b.checkOutDate}"></td>
+                <td th:text="${b.status}"></td>
+                <td th:text="${#numbers.formatDecimal(b.totalPrice, 2, 2)}"></td>
+
+                <td>
+                    <!-- only show when not cancelled -->
+                    <a th:if="${b.status != 'CANCELLED'}"
+                       th:href="@{'/customer/booking/' + ${b.bookingId} + '/details'}">View</a>
+                    <a th:if="${b.status != 'CANCELLED'}"
+                       th:href="@{'/customer/booking/' + ${b.bookingId} + '/edit'}">Edit</a>
+                    <form th:action="@{'/customer/booking/' + ${b.bookingId} + '/cancel'}"
+                          method="post" style="display:inline;">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <button type="submit"
+                                th:disabled="${b.status == 'CANCELLED'}">
+                            Cancel
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section th:if="${bookings.size()==0}">
+        <p>You have no bookings yet.</p>
+        <a th:href="@{/customer/booking}">Make your first booking</a>
+    </section>
+</main>
+
+</body>
+</html>

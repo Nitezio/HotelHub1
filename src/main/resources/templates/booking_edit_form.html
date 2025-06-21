@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit Booking – Hotel Hub 1</title>
+    <link rel="stylesheet" href="/css/site.css"/>
+</head>
+<body>
+<nav><a th:href="@{/customer/dashboard}">← Back to Dashboard</a></nav>
+<main>
+    <h2>Edit Your Booking</h2>
+    <form th:action="@{|/customer/booking/${booking.bookingId}/edit|}" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+
+        <label>Package:</label>
+        <select name="packageId" required>
+            <option th:each="pkg : ${packages}"
+                    th:selected="${pkg.packageId == booking.aPackage.packageId}"
+                    th:value="${pkg.packageId}"
+                    th:text="${pkg.packageName}"></option>
+        </select><br/>
+
+        <label>Room Type:</label>
+        <select name="roomTypeId" required>
+            <option th:each="rt : ${roomTypes}"
+                    th:selected="${rt.roomTypeId == booking.room.roomType.roomTypeId}"
+                    th:value="${rt.roomTypeId}"
+                    th:text="${rt.typeName}"></option>
+        </select><br/>
+
+        <label>Check‑In:</label>
+        <input type="date" name="checkIn"
+               th:value="${booking.checkInDate}" required/><br/>
+
+        <label>Check‑Out:</label>
+        <input type="date" name="checkOut"
+               th:value="${booking.checkOutDate}" required/><br/><br/>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</main>
+</body>
+</html>

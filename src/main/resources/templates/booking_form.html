@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>New Booking – Hotel Hub 1</title>
+    <link rel="stylesheet" href="/css/site.css"/>
+    <style>
+        .summary { margin-top:1rem; font-weight:bold; }
+    </style>
+</head>
+<body>
+<nav>
+    <a th:href="@{/customer/dashboard}">← Back to Dashboard</a>
+</nav>
+<main>
+    <h2>Choose Your Package &amp; Room</h2>
+    <form th:action="@{/customer/booking/confirm}" method="post" id="bookingForm">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+
+        <label for="pkg">Package:</label>
+        <select id="pkg" name="packageId" required>
+            <option th:each="pkg : ${packages}"
+                    th:value="${pkg.packageId}"
+                    th:data-price="${pkg.packagePrice}"
+                    th:text="${pkg.packageName}">
+            </option>
+        </select><br/>
+
+        <label for="room">Room Type:</label>
+        <select id="room" name="roomTypeId" required>
+            <option th:each="rt : ${roomTypes}"
+                    th:value="${rt.roomTypeId}"
+                    th:data-price="${rt.pricePerNight}"
+                    th:text="${rt.typeName}">
+            </option>
+        </select><br/>
+
+        <label for="cin">Check‑In:</label>
+        <input type="date" id="cin" name="checkIn" required/><br/>
+
+        <label for="cout">Check‑Out:</label>
+        <input type="date" id="cout" name="checkOut" required/><br/>
+
+        <label for="pm">Payment Method:</label>
+        <select id="pm" name="paymentMethod" required>
+            <option value="CASH">Cash</option>
+            <option value="QR">QR</option>
+            <option value="CARD">Debit/Credit</option>
+        </select><br/>
+
+        <div class="summary">
+            Total Cost: <span id="totalCost">0.00</span>
+        </div>
+
+        <button type="submit">Continue &amp; Pay</button>
+    </form>
+</main>
+
+<script>
+    const pkg = document.getElementById('pkg');
+    const room = document.getElementById('room');
+    const cin = document.getElementById('cin');
+    const cout = document.getElementById('cout');
+    const total = document.getElementById('totalCost');
+
+    [pkg, room, cin, cout].forEach(el =>
+        el.addEventListener('change', updateTotal)
+    );
+
+    function updateTotal() {
+        const pp = parseFloat(pkg.selectedOptions[0].dataset.price || 0);
+        const rp = parseFloat(room.selectedOptions[0].dataset.price || 0);
+        const d1 = new Date(cin.value);
+        const d2 = new Date(cout.value);
+        const nights = (d2 - d1) / (1000 * 60 * 60 * 24);
+        if (!isNaN(nights) && nights > 0) {
+            total.textContent = (pp + rp * nights).toFixed(2);
+        } else {
+            total.textContent = '0.00';
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer Dashboard</title>
+</head>
+<body>
+<nav>
+    <a href="/customer/dashboard">Home</a> |
+    <a href="/customer/booking">Booking</a> |
+    <a href="/logout">Logout</a>
+</nav>
+
+<h2>Welcome [[${#authentication.name}]]!</h2>
+
+<table border="1">
+    <tr>
+        <th>Booking ID</th>
+        <th>Room #</th>
+        <th>Check-In</th>
+        <th>Check-Out</th>
+        <th>Package</th>
+        <th>Status</th>
+        <th>Details</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.id}"></td>
+        <td th:text="${booking.room.roomNumber}"></td>
+        <td th:text="${booking.checkInDate}"></td>
+        <td th:text="${booking.checkOutDate}"></td>
+        <td th:text="${booking.pack.packageName}"></td>
+        <td th:text="${booking.status}"></td>
+        <td><a th:href="@{'/customer/booking/' + ${booking.id} + '/details'}">View</a></td>
+        <td>
+            <form th:action="@{'/customer/booking/' + ${booking.id} + '/cancel'}" method="post">
+                <button type="submit">Cancel</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

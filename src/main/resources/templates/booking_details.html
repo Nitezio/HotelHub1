@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Booking Details</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<nav>
+    <a th:href="@{/customer/dashboard}">← Back to Dashboard</a>
+</nav>
+
+<h2>Booking Details</h2>
+
+<div th:if="${booking != null}">
+    <p><strong>Booking ID:</strong> [[${booking.bookingId}]]</p>
+    <p><strong>Customer:</strong> [[${booking.customer.customerName}]]</p>
+    <p><strong>Email:</strong> [[${booking.customer.email}]]</p>
+    <p><strong>Phone:</strong> [[${booking.customer.phoneNumber}]]</p>
+    <p><strong>Room:</strong> [[${booking.room.roomNumber}]]</p>
+    <p><strong>Package:</strong> [[${booking.aPackage.packageName}]]</p>
+    <p><strong>Status:</strong> [[${booking.status}]]</p>
+    <p><strong>Check-in:</strong> [[${booking.checkInDate}]]</p>
+    <p><strong>Check-out:</strong> [[${booking.checkOutDate}]]</p>
+    <p><strong>Payment(s):</strong>
+        <span th:each="pay : ${booking.payments}">
+            [<span th:text="${pay.paymentMethod}"></span> - <span th:text="${pay.paymentStatus}"></span>]
+        </span>
+    </p>
+</div>
+
+<br/>
+<button onclick="window.print()">Print Receipt</button>
+
+</body>
+</html>
