@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View Room</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/staff/rooms}">← Back to Rooms</a>
+</nav>
+<h2>Room <span th:text="${room.roomNumber}"></span></h2>
+<p><strong>Status:</strong> <span th:text="${room.status}"></span></p>
+<p><strong>Price:</strong> RM <span th:text="${#numbers.formatDecimal(room.pricePerNight,2,2)}"></span></p>
+<p><strong>Type:</strong> <span th:text="${room.roomType.typeName}"></span></p>
+</body>
+</html>

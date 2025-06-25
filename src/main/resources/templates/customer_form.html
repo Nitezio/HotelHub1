@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${customer.customerId} != null ? 'Edit Customer' : 'New Customer'">Customer Form</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/staff/customers}">← Back to Customers</a>
+</nav>
+<h2 th:text="${customer.customerId} != null ? 'Edit Customer' : 'Add New Customer'"></h2>
+<form th:action="@{${customer.customerId} != null ? '/staff/customers/' + ${customer.customerId} + '/edit' : '/staff/customers/new'}"
+      th:object="${customer}" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+    <label>Name: <input type="text" th:field="*{name}" required /></label><br/>
+    <label>Email: <input type="email" th:field="*{email}" required /></label><br/>
+    <label>Phone: <input type="text" th:field="*{phoneNumber}" required /></label><br/>
+    <label>Address: <input type="text" th:field="*{address}" required /></label><br/>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

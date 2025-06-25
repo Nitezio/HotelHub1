@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>All Packages</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/staff/dashboard}">← Back to Dashboard</a>
+</nav>
+<h2>All Packages</h2>
+<a th:href="@{/staff/packages/new}" class="btn">Add New Package</a>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Days</th>
+        <th>People</th>
+        <th>Facilities</th>
+        <th>Price</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pkg : ${packages}">
+        <td th:text="${pkg.packageName}"></td>
+        <td th:text="${pkg.numberOfDays}"></td>
+        <td th:text="${pkg.maxPeople}"></td>
+        <td th:text="${pkg.facilitiesIncluded}"></td>
+        <td th:text="${#numbers.formatDecimal(pkg.packagePrice,2,2)}"></td>
+        <td>
+            <a th:href="@{'/staff/packages/' + ${pkg.packageId} + '/edit'}">Edit</a> |
+            <a th:href="@{'/staff/packages/' + ${pkg.packageId}}">View</a> |
+            <form th:action="@{'/staff/packages/' + ${pkg.packageId} + '/delete'}" method="post" style="display:inline">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit" onclick="return confirm('Delete this package?');">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

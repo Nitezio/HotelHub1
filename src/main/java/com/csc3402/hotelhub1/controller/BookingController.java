@@ -6,6 +6,7 @@ import com.csc3402.hotelhub1.service.BookingService;
 import com.csc3402.hotelhub1.repository.PackageRepository;
 import com.csc3402.hotelhub1.repository.RoomTypeRepository;
 import com.csc3402.hotelhub1.repository.CustomerRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,11 +39,17 @@ public class BookingController {
     }
 
     @GetMapping({"/home", "/dashboard"})
-    public String dashboard(Model model, @AuthenticationPrincipal UserDetails user) {
+    public String dashboard(Model model,
+                            @AuthenticationPrincipal UserDetails user) {
         String email = user.getUsername();
         List<Booking> bookings = bookingService.getBookingsByCustomerEmail(email);
         model.addAttribute("bookings", bookings);
-        model.addAttribute("customer", customerRepo.findByEmail(email));
+
+        // unwrap Optional<Customer> before adding
+        Customer customer = customerRepo.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found: " + email));
+        model.addAttribute("customer", customer);
+
         return "customer_dashboard";
     }
 
@@ -60,7 +67,14 @@ public class BookingController {
                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
                                  @RequestParam String paymentMethod,
                                  @AuthenticationPrincipal UserDetails user) {
-        bookingService.createBooking(packageId, roomTypeId, checkIn, checkOut, paymentMethod, user.getUsername());
+        bookingService.createBooking(
+                packageId,
+                roomTypeId,
+                checkIn,
+                checkOut,
+                paymentMethod,
+                user.getUsername()
+        );
         return "redirect:/customer/dashboard";
     }
 
@@ -72,13 +86,15 @@ public class BookingController {
 
     @GetMapping("/booking/{id}/details")
     public String details(@PathVariable Long id, Model model) {
-        model.addAttribute("booking", bookingService.getBookingWithPaymentDetails(id));
+        model.addAttribute("booking",
+                bookingService.getBookingWithPaymentDetails(id));
         return "booking_details";
     }
 
     @GetMapping("/booking/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("booking", bookingService.getBookingWithPaymentDetails(id));
+        model.addAttribute("booking",
+                bookingService.getBookingWithPaymentDetails(id));
         model.addAttribute("packages", packageRepo.findAll());
         model.addAttribute("roomTypes", roomTypeRepo.findAll());
         return "booking_edit_form";
@@ -91,7 +107,14 @@ public class BookingController {
                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
                               @AuthenticationPrincipal UserDetails user) {
-        bookingService.updateBooking(id, packageId, roomTypeId, checkIn, checkOut, user.getUsername());
+        bookingService.updateBooking(
+                id,
+                packageId,
+                roomTypeId,
+                checkIn,
+                checkOut,
+                user.getUsername()
+        );
         return "redirect:/customer/dashboard";
     }
 }

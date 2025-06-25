@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>All Customers</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/staff/dashboard}">← Back to Dashboard</a>
+</nav>
+<h2>All Customers</h2>
+<a th:href="@{/staff/customers/new}" class="btn">Add New Customer</a>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${customers}">
+        <td th:text="${c.name}"></td>
+        <td th:text="${c.email}"></td>
+        <td th:text="${c.phoneNumber}"></td>
+        <td th:text="${c.address}"></td>
+        <td>
+            <a th:href="@{'/staff/customers/' + ${c.customerId} + '/edit'}">Edit</a> |
+            <a th:href="@{'/staff/customers/' + ${c.customerId}}">View</a> |
+            <form th:action="@{'/staff/customers/' + ${c.customerId} + '/delete'}" method="post" style="display:inline">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit" onclick="return confirm('Delete this customer?');">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

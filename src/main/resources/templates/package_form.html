@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${aPackage.packageId} != null ? 'Edit Package' : 'New Package'"></title>
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/staff/packages}">← Back to Packages</a>
+</nav>
+<h2 th:text="${aPackage.packageId} != null ? 'Edit Package' : 'Add New Package'"></h2>
+<form th:action="@{${aPackage.packageId} != null ? '/staff/packages/' + ${aPackage.packageId} + '/edit' : '/staff/packages/new'}"
+      th:object="${aPackage}"
+      method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+    <label>Name: <input type="text" th:field="*{packageName}" required /></label><br/>
+    <label>Days: <input type="number" th:field="*{numberOfDays}" required /></label><br/>
+    <label>People: <input type="number" th:field="*{maxPeople}" required /></label><br/>
+    <label>Facilities: <input type="text" th:field="*{facilitiesIncluded}" required /></label><br/>
+    <label>Price: <input type="number" step="0.01" th:field="*{packagePrice}" required /></label><br/>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

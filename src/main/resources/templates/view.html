@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+        }
+        .modal-content {
+            background-color: #222;
+            border: 1px solid gold;
+            color: gold;
+        }
+        .btn-close {
+            background-color: gold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Auto-show modal -->
+<div class="modal show d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title">Customer Details</h5>
+            </div>
+            <div class="modal-body">
+                <p><strong>Name:</strong> <span th:text="${customer.name}">Name</span></p>
+                <p><strong>Email:</strong> <span th:text="${customer.email}">Email</span></p>
+                <p><strong>Phone Number:</strong> <span th:text="${customer.phoneNumber}">Phone</span></p>
+                <p><strong>Address:</strong> <span th:text="${customer.address}">Address</span></p>
+                <p><strong>Role:</strong> <span th:text="${customer.role}">Role</span></p>
+            </div>
+            <div class="modal-footer">
+                <a href="/staff/customers" class="btn btn-outline-light">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

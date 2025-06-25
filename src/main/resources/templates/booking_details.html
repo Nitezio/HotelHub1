@@ -16,10 +16,13 @@
             padding: 2rem;
         }
 
-        a {
-            color: gold;
-            font-weight: bold;
-            text-decoration: none;
+        .receipt-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: rgba(0,0,0,0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 0 10px gold;
         }
 
         h2 {
@@ -28,15 +31,6 @@
             color: gold;
             margin-bottom: 2rem;
             text-align: center;
-        }
-
-        .receipt-container {
-            max-width: 800px;
-            margin: auto;
-            background-color: rgba(0,0,0,0.8);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 0 10px gold;
         }
 
         .section {
@@ -74,7 +68,6 @@
             border-radius: 10px;
         }
 
-        /* Print layout */
         @media print {
             body {
                 background: white !important;
@@ -92,25 +85,11 @@
                 background-color: white !important;
                 color: black !important;
             }
-
-            .section h5,
-            .section p,
-            .total-price,
-            strong,
-            span {
-                color: black !important;
-            }
-
-            hr {
-                border-color: black !important;
-            }
         }
-
     </style>
 </head>
 <body>
 
-<!-- Back Link -->
 <div class="mb-3">
     <a th:href="@{/customer/dashboard}">← Back to Dashboard</a>
 </div>
@@ -118,10 +97,9 @@
 <h2>Booking Receipt</h2>
 
 <div class="receipt-container">
-    <!-- Booking Information -->
     <div class="section">
         <h5>Customer Information</h5>
-        <p><strong>Name:</strong> <span th:text="${booking.customer.customerName}">John Doe</span></p>
+        <p><strong>Name:</strong> <span th:text="${booking.customer.name}">John Doe</span></p>
         <p><strong>Email:</strong> <span th:text="${booking.customer.email}">john@example.com</span></p>
         <p><strong>Phone:</strong> <span th:text="${booking.customer.phoneNumber}">0123456789</span></p>
     </div>
@@ -136,7 +114,6 @@
         <p><strong>Status:</strong> <span th:text="${booking.status}">CONFIRMED</span></p>
     </div>
 
-    <!-- Payment Summary -->
     <div class="section">
         <h5>Payment Information</h5>
         <div th:each="pay : ${booking.payments}">
@@ -151,7 +128,6 @@
     </div>
 </div>
 
-<!-- Print Button -->
 <button onclick="window.print()" class="print-btn">Print Receipt</button>
 
 </body>

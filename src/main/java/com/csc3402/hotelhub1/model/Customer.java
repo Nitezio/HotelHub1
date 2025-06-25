@@ -1,7 +1,8 @@
 package com.csc3402.hotelhub1.model;
 
 import jakarta.persistence.*;
-import java.util.List;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "customer")
@@ -10,38 +11,51 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
 
-    private String customerName;
+    /** maps to customer_name in data.sql */
+    @NotBlank
+    @Column(name = "customer_name")
+    private String name;
+
+    @Email @NotBlank
+    @Column(unique = true)
     private String email;
+
+    /** maps to phone_number */
+    @NotBlank
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @NotBlank
     private String address;
+
+    @NotBlank
     private String password;
-    private String role = "CUSTOMER";
 
-    @OneToMany(mappedBy = "customer")
-    private List<Booking> bookings;
+    /** maps to role */
+    @NotBlank
+    private String role = "ROLE_CUSTOMER";  // your data file already uses ROLE_STAFF etc.
 
-    // getters and setters
+    public Customer() {}
+
+    // --- Getters & setters for every field ---
 
     public Long getCustomerId() {
         return customerId;
     }
-
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getName() {
+        return name;
     }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -49,7 +63,6 @@ public class Customer {
     public String getPhoneNumber() {
         return phoneNumber;
     }
-
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -57,7 +70,6 @@ public class Customer {
     public String getAddress() {
         return address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
@@ -65,7 +77,6 @@ public class Customer {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -73,44 +84,7 @@ public class Customer {
     public String getRole() {
         return role;
     }
-
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public List<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
-    }
-
-    public Customer() {
-    }
-
-    public Customer(Long customerId, String customerName, String email, String phoneNumber, String address, String password, String role, List<Booking> bookings) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.password = password;
-        this.role = role;
-        this.bookings = bookings;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", customerName='" + customerName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", bookings=" + bookings +
-                '}';
     }
 }

@@ -1,130 +1,67 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Edit Booking – Hotel Hub 1</title>
+    <title>Edit Booking – HotelHub Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap + Google Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-
-    <style>
-
-        body {
-            background: url('https://img.freepik.com/premium-vector/abstract-black-luxury-background-modern-dark-gold-curve-line-golden-sparkle_35887-588.jpg?semt=ais_hybrid&w=740') no-repeat center center fixed;
-            background-size: cover;
-            color: gold;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-
-
-    nav a {
-            display: inline-block;
-            margin: 1rem;
-            color: gold;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            color: white;
-        }
-
-        main {
-            max-width: 600px;
-            margin: 3rem auto;
-            background-color: rgba(0, 0, 0, 0.75);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-        }
-
-        h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: gold;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 1rem;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 0.5rem;
-            margin-top: 0.3rem;
-            border: none;
-            border-radius: 8px;
-            background-color: #111;
-            color: gold;
-        }
-
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-        }
-
-        button {
-            margin-top: 2rem;
-            width: 100%;
-            padding: 0.7rem;
-            background-color: gold;
-            color: black;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #ffdd33;
-        }
-    </style>
 </head>
 <body>
+<div class="container mt-4">
+    <nav class="mb-3">
+        <a th:href="@{/staff/bookings}" class="btn btn-secondary">← Back to All Bookings</a>
+    </nav>
 
-<nav>
-    <a th:href="@{/customer/dashboard}">← Back to Dashboard</a>
-</nav>
-
-<main>
-    <h2>Edit Your Booking</h2>
-    <form th:action="@{|/customer/booking/${booking.bookingId}/edit|}" method="post">
+    <h2>Edit Booking — ID <span th:text="${booking.bookingId}">#</span></h2>
+    <form th:action="@{|/staff/bookings/${booking.bookingId}/edit|}" method="post" class="mt-3">
         <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
-        <label for="package">Package:</label>
-        <select name="packageId" id="package" required>
-            <option th:each="pkg : ${packages}"
-                    th:selected="${pkg.packageId == booking.aPackage.packageId}"
-                    th:value="${pkg.packageId}"
-                    th:text="${pkg.packageName}"></option>
-        </select>
+        <div class="mb-3">
+            <label class="form-label">Package</label>
+            <select name="packageId" class="form-select" required>
+                <option th:each="pkg : ${packages}"
+                        th:value="${pkg.packageId}"
+                        th:text="${pkg.packageName}"
+                        th:selected="${pkg.packageId == booking.aPackage.packageId}">
+                </option>
+            </select>
+        </div>
 
-        <label for="room">Room Type:</label>
-        <select name="roomTypeId" id="room" required>
-            <option th:each="rt : ${roomTypes}"
-                    th:selected="${rt.roomTypeId == booking.room.roomType.roomTypeId}"
-                    th:value="${rt.roomTypeId}"
-                    th:text="${rt.typeName}"></option>
-        </select>
+        <div class="mb-3">
+            <label class="form-label">Room</label>
+            <select name="roomId" class="form-select" required>
+                <option th:each="r : ${rooms}"
+                        th:value="${r.roomId}"
+                        th:text="${r.roomNumber + ' - ' + r.roomType.typeName}"
+                        th:selected="${r.roomId == booking.room.roomId}">
+                </option>
+            </select>
+        </div>
 
-        <label for="checkIn">Check‑In:</label>
-        <input type="date" id="checkIn" name="checkIn" th:value="${booking.checkInDate}" required/>
+        <div class="mb-3">
+            <label class="form-label">Check-In</label>
+            <input type="date" name="checkInDate" class="form-control"
+                   th:value="${booking.checkInDate}" required/>
+        </div>
 
-        <label for="checkOut">Check‑Out:</label>
-        <input type="date" id="checkOut" name="checkOut" th:value="${booking.checkOutDate}" required/>
+        <div class="mb-3">
+            <label class="form-label">Check-Out</label>
+            <input type="date" name="checkOutDate" class="form-control"
+                   th:value="${booking.checkOutDate}" required/>
+        </div>
 
-        <button type="submit">Save Changes</button>
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select" required>
+                <option value="CONFIRMED" th:selected="${booking.status == 'CONFIRMED'}">CONFIRMED</option>
+                <option value="CANCELLED" th:selected="${booking.status == 'CANCELLED'}">CANCELLED</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
-</main>
+</div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

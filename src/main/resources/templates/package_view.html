@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View Package</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/staff/packages}">← Back to Packages</a>
+</nav>
+<h2 th:text="${aPackage.packageName}"></h2>
+<p><strong>Days:</strong> <span th:text="${aPackage.numberOfDays}"></span></p>
+<p><strong>Max People:</strong> <span th:text="${aPackage.maxPeople}"></span></p>
+<p><strong>Facilities:</strong> <span th:text="${aPackage.facilitiesIncluded}"></span></p>
+<p><strong>Price:</strong> RM <span th:text="${#numbers.formatDecimal(aPackage.packagePrice,2,2)}"></span></p>
+</body>
+</html>

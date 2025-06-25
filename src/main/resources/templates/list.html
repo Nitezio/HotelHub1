@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>All Customers – Admin</title>
+  <link rel="stylesheet" href="/css/site.css"/>
+</head>
+<body>
+<nav>
+  <a th:href="@{/staff/dashboard}">← Dashboard</a>
+</nav>
+
+<h1>All Customers</h1>
+<a th:href="@{/staff/customers/new}">+ Add Customer</a>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Address</th>
+    <th>Role</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="c : ${customers}">
+    <td th:text="${c.customerId}">1</td>
+    <td th:text="${c.name}">Name</td>
+    <td th:text="${c.email}">email@example.com</td>
+    <td th:text="${c.phoneNumber}">0123456789</td>
+    <td th:text="${c.address}">Address</td>
+    <td th:text="${c.role}">ROLE_CUSTOMER</td>
+    <td>
+      <a th:href="@{'/staff/customers/' + ${c.customerId}}">View</a> |
+      <a th:href="@{'/staff/customers/' + ${c.customerId} + '/edit'}">Edit</a> |
+      <form th:action="@{'/staff/customers/' + ${c.customerId} + '/delete'}"
+            method="post" style="display:inline">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <button type="submit" onclick="return confirm('Delete customer?')">Delete</button>
+      </form>
+    </td>
+  </tr>
+  <tr th:if="${#lists.isEmpty(customers)}">
+    <td colspan="7">No customers found.</td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

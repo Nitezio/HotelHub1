@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>All Rooms</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/staff/dashboard}">← Back to Dashboard</a>
+</nav>
+<h2>All Rooms</h2>
+<a th:href="@{/staff/rooms/new}" class="btn">Add New Room</a>
+<table>
+    <thead>
+    <tr>
+        <th>Room No</th>
+        <th>Status</th>
+        <th>Price</th>
+        <th>Type</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="r : ${rooms}">
+        <td th:text="${r.roomNumber}"></td>
+        <td th:text="${r.status}"></td>
+        <td th:text="${#numbers.formatDecimal(r.pricePerNight,2,2)}"></td>
+        <td th:text="${r.roomType.typeName}"></td>
+        <td>
+            <a th:href="@{'/staff/rooms/' + ${r.roomId} + '/edit'}">Edit</a> |
+            <a th:href="@{'/staff/rooms/' + ${r.roomId}}">View</a> |
+            <form th:action="@{'/staff/rooms/' + ${r.roomId} + '/delete'}" method="post" style="display:inline">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit" onclick="return confirm('Delete room?');">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

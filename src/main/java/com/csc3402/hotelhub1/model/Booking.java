@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "booking")
 public class Booking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
@@ -34,7 +35,9 @@ public class Booking {
 
     public Booking() {}
 
-    public Booking(Long bookingId, Customer customer, Package aPackage, LocalDate checkInDate, LocalDate checkOutDate, LocalDate bookingDate, String status, List<Payment> payments, Room room) {
+    public Booking(Long bookingId, Customer customer, Package aPackage, LocalDate checkInDate,
+                   LocalDate checkOutDate, LocalDate bookingDate, String status,
+                   List<Payment> payments, Room room) {
         this.bookingId = bookingId;
         this.customer = customer;
         this.aPackage = aPackage;
@@ -62,11 +65,11 @@ public class Booking {
         this.customer = customer;
     }
 
-    public Package getaPackage() {
+    public Package getAPackage() {
         return aPackage;
     }
 
-    public void setaPackage(Package aPackage) {
+    public void setAPackage(Package aPackage) {
         this.aPackage = aPackage;
     }
 
@@ -118,9 +121,6 @@ public class Booking {
         this.room = room;
     }
 
-    /**
-     * Derived property used in customer_dashboard.html
-     */
     public double getTotalPrice() {
         if (checkInDate != null && checkOutDate != null && room != null && aPackage != null) {
             long nights = ChronoUnit.DAYS.between(checkInDate, checkOutDate);

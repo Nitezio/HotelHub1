@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Customer Form – Admin</title>
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/staff/customers}">← Back to list</a>
+</nav>
+
+<h1 th:text="${customer.customerId} != null ? 'Edit Customer' : 'New Customer'">Customer Form</h1>
+
+<form th:action="${customer.customerId} != null ? @{'/staff/customers/' + ${customer.customerId} + '/edit'} : @{'/staff/customers/new'}"
+      th:object="${customer}" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+
+    <div>
+        <label for="name">Name:</label>
+        <input id="name" type="text" th:field="*{name}" required />
+    </div>
+
+    <div>
+        <label for="email">Email:</label>
+        <input id="email" type="email" th:field="*{email}" required />
+    </div>
+
+    <div>
+        <label for="phoneNumber">Phone:</label>
+        <input id="phoneNumber" type="text" th:field="*{phoneNumber}" required />
+    </div>
+
+    <div>
+        <label for="address">Address:</label>
+        <input id="address" type="text" th:field="*{address}" required />
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input id="password" type="password" th:field="*{password}" required />
+    </div>
+
+    <div>
+        <label for="role">Role:</label>
+        <select id="role" th:field="*{role}">
+            <option value="ROLE_CUSTOMER">Customer</option>
+            <option value="ROLE_STAFF">Staff</option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+</body>
+</html>
